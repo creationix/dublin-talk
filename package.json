@@ -1,0 +1,10 @@
+{
+  "name": "dublin",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Content for Node Dublin 2013 talk",
+  "dependencies": {
+    "web": "~0.0.1"
+  },
+  "author": "Tim Caswell <tim@creationix.com>"
+}

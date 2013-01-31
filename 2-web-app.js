@@ -24,7 +24,6 @@ var app = function (req, res) {
 
 app = greeter(app);
 app = logger(app);
-app = require('web/middle').autoHeaders(app);
 
 ////////////////////////////////////////////////////////////////////////////////
 

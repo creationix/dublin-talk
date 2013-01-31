@@ -20,7 +20,7 @@
 
 // Continuables are a middle ground between node style callbacks and bull-blown
 // promises.
-// WARNING: This API is in heavy experimentation
+
 
 
 

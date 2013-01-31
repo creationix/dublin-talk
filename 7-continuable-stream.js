@@ -101,7 +101,7 @@ var writable = new MyWritable();
 
 
 ////////////////////////////////////////////////////////////////////////////////
-// Pipeing from a readable node stream to a writable stream
+// Piping from a readable node stream to a writable stream
 
 
 var readable = fs.createReadStream("/path/to/file");
@@ -269,20 +269,6 @@ var stream = {
 
 
 
-////////////////////////////////////////////////////////////////////////////////
-// Pipeing from a readable continuable stream to a writable stream with generators
-
-var readable = fs.createReadStream("/path/to/file");
-var writable = fs.createWriteStream("/path/to/copy");
-
-do {
-  var chunk = await(readable.read());
-  await(writable.write(chunk));
-} while (chunk);
-
-
-
-
 
 
 
@@ -298,7 +284,45 @@ do {
 
 
 ////////////////////////////////////////////////////////////////////////////////
-// Pipeing from a readable continuable stream to a writable stream without generators
+// Piping from a readable continuable stream to a writable stream without
+// generators.
+
+
+var readable = fs.createReadStream("/path/to/file");
+var writable = fs.createWriteStream("/path/to/copy");
+
+pipe(readable, writable)(function () {
+  console.log("Write finished");
+});
+
+
+
+
+function pipe(readable, writable) { return (onDone, onError) {
+  readable.read()(onRead, onError);
+
+  function onRead(chunk) {
+    writable.write(chunk)(chunk ? onWrite : onDone, onError);
+  }
+
+  function onWrite() {
+    readable.read()(onRead, onError);
+  }
+}}
+
+
+
+
+
+
+
+
+
+
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Piping from a readable continuable stream to a writable stream with generators
 
 var readable = fs.createReadStream("/path/to/file");
 var writable = fs.createWriteStream("/path/to/copy");
@@ -307,3 +331,5 @@ do {
   var chunk = await(readable.read());
   await(writable.write(chunk));
 } while (chunk);
+
+console.log("Write finished");
